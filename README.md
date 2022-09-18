@@ -153,9 +153,9 @@ I use the workspace provided by Udacity.
 #### Dataset analysis
 This dataset contains images with multiple bounding boxes, each bounding box indicates one of the object in cars, pedestrians and cyclists.
 Some of the images are blurry and dark, some of them are clear and light. A demo of images is shown below.
+
 ![Data Demo](images/data_demo10.png "Data set demo")
 
-> This section should contain a quantitative and qualitative description of the dataset. It should include images, charts and other visualizations.
 #### Cross validation
 Here we follow the original CV folds setting, which are already shuffled and separated into three parts: train/val/test is 86/10/10, there are total 106 tfrecord samples in the dataset.
 
@@ -168,8 +168,6 @@ The lower training loss often means the model is better or overfitting. We also 
     Refer to the image above, we got the bad performance on the reference model. 
     ![Reference Loss](images/reference_loss.png "Reference Loss")
     And we found that the loss is unstable during training. So we enlarge the batch size from 2 to 8, then retrain the model again.
-
-> This section should detail the results of the reference experiment. It should includes training metrics and a detailed explanation of the algorithm's performances.
 
 #### Improve on the reference
 2. Experiment1_bs8

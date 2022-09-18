@@ -138,23 +138,54 @@ Finally, you can create a video of your model's inferences for any tf record fil
 python inference_video.py --labelmap_path label_map.pbtxt --model_path experiments/reference/exported/saved_model --tf_record_path /data/waymo/testing/segment-12200383401366682847_2552_140_2572_140_with_camera_labels.tfrecord --config_path experiments/reference/pipeline_new.config --output_path animation.gif
 ```
 
-## Submission Template
+## Submission
 
 ### Project overview
-This section should contain a brief description of the project and what we are trying to achieve. Why is object detection such an important component of self driving car systems?
+This repo is the first project of Udacity Self Driving Car, which uses the TensorFlow Object Detection API to detect cars, pedestrians, cyclists.
+For self-driving car, it's very important to know how many things there are surround the car, then we could make decision for safe driving.
+At the begining, we are given with a simple model with poor performance on the detection. We could show the steps how we improve our model and what we observed between the result after  each step.
 
 ### Set up
-This section should contain a brief description of the steps to follow to run the code for this repository.
+Please find the setup tutorial on the Udacity's page.
+I use the workspace provided by Udacity.
 
 ### Dataset
 #### Dataset analysis
-This section should contain a quantitative and qualitative description of the dataset. It should include images, charts and other visualizations.
+This dataset contains images with multiple bounding boxes, each bounding box indicates one of the object in cars, pedestrians and cyclists.
+Some of the images are blurry and dark, some of them are clear and light. A demo of images is shown below.
+![Data Demo](images/data_demo10.png "Data set demo")
+
+> This section should contain a quantitative and qualitative description of the dataset. It should include images, charts and other visualizations.
 #### Cross validation
-This section should detail the cross validation strategy and justify your approach.
+Here we follow the original CV folds setting, which are already shuffled and separated into three parts: train/val/test is 86/10/10, there are total 106 tfrecord samples in the dataset.
+
 
 ### Training
 #### Reference experiment
-This section should detail the results of the reference experiment. It should includes training metrics and a detailed explanation of the algorithm's performances.
+The lower training loss often means the model is better or overfitting. We also calculate the Precision and Recall to check the model performance. Because sometimes when the precision increase and the recall will decrease. Then we calculate mAP as one single metric to evaluate the performance easily.
+1. Reference mAP
+    ![Reference Result](images/reference_mAp.png "Reference result")
+    Refer to the image above, we got the bad performance on the reference model. 
+    ![Reference Loss](images/reference_loss.png "Reference Loss")
+    And we found that the loss is unstable during training. So we enlarge the batch size from 2 to 8, then retrain the model again.
+
+> This section should detail the results of the reference experiment. It should includes training metrics and a detailed explanation of the algorithm's performances.
 
 #### Improve on the reference
-This section should highlight the different strategies you adopted to improve your model. It should contain relevant figures and details of your findings.
+2. Experiment1_bs8
+    ![exp1_bs8](images/exp1_bs8_mAP.png "Experiment1 batch_size:8")
+    We enlarge the batch size by 4 times, so we could decrease the steps number by 4 times, that makes the training steps keep on the same level.
+    ![exp1_bs8_loss](images/exp1_bs8_loss.png "Experiment1 loss")
+    After enlarge the batch size, we observe the loss is getting stable and less than before, and the performance is slightly better than before as well.
+    ![exp1_bs8_issue1](images/exp1_bs8_issue_1.jpg "Darker image")
+    The we observed some test images is darker than training images, we should add some augmentation on the training set.
+
+3. Experiment2_aug
+    ![exp2_aug](images/exp2_aug_mAP.png "Experiment2 batch_size:8") 
+    We apply "RGB2Gray" augmentation with probability 0.2 which means one image has 20% probability being converted to a gray image. An example is shown below.
+    ![RGB2Gray example](images/data_aug_demo.png "RGB2Gray")
+    And we apply "Adjust Brightness" augmentation with delta 0.2 to lighten the image as well.
+    ![exp2_aug_fix_issue1](images/exp2_aug_animation_fix_issue1.jpg "Fix issue1")
+    As you can see, now the model could see the cars in the night, even though it doesn't recognize as good as human now.
+    
+    During these observation, we could optimize our model step by step. Due to the poor user experience of the Udacity workspace, I decide to stop the optimization here not wasting my time.

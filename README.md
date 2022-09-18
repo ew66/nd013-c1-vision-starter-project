@@ -156,6 +156,12 @@ Some of the images are blurry and dark, some of them are clear and light. A demo
 
 ![Data Demo](images/data_demo10.png "Data set demo")
 
+Then, we randomly pick 10k images from our training set to calculate the distribution of objects and the average number of objects in a image.
+The mean number of objects per image is 22.3, and the distribution is shown below.
+
+![Distribution of 10k images](images/dataset_label_hist.png "Distribution of 10k images")
+
+
 #### Cross validation
 Here we follow the original CV folds setting, which are already shuffled and separated into three parts: train/val/test is 86/10/10, there are total 106 tfrecord samples in the dataset.
 

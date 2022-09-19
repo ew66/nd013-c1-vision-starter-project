@@ -182,14 +182,19 @@ The lower training loss often means the model is better or overfitting. We also 
     ![exp1_bs8_loss](images/exp1_bs8_loss.png "Experiment1 loss")
     After enlarge the batch size, we observe the loss is getting stable and less than before, and the performance is slightly better than before as well.
     ![exp1_bs8_issue1](images/exp1_bs8_issue_1.jpg "Darker image")
-    The we observed some test images is darker than training images, we should add some augmentation on the training set.
+    Then we observed some test images is darker than training images, we should add some augmentation on the training set.
 
 3. Experiment2_aug
     ![exp2_aug](images/exp2_aug_mAP.png "Experiment2 batch_size:8") 
+    
     We apply "RGB2Gray" augmentation with probability 0.2 which means one image has 20% probability being converted to a gray image. An example is shown below.
+    
     ![RGB2Gray example](images/data_aug_demo.png "RGB2Gray")
+    
     And we apply "Adjust Brightness" augmentation with delta 0.2 to lighten the image as well.
+    
     ![exp2_aug_fix_issue1](images/exp2_aug_animation_fix_issue1.jpg "Fix issue1")
+    
     As you can see, now the model could see the cars in the night, even though it doesn't recognize as good as human now.
     
     During these observation, we could optimize our model step by step. Due to the poor user experience of the Udacity workspace, I decide to stop the optimization here not wasting my time.
